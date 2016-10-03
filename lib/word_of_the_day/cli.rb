@@ -19,7 +19,7 @@ class WordOfTheDay::CLI
   end #list_words
 
   def menu
-    puts "Enter your word number:"
+    #puts "Enter your word number:"
     input = nil
     while input != "exit"
       input = gets.strip.downcase

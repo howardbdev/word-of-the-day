@@ -20,7 +20,7 @@ class WordOfTheDay::Words
     word_mw.site_name = "Merriam-Webster"
     word_mw.date = doc.search(".w-a-title").text.strip
     word_mw.word = doc.search(".word-and-pronunciation h1").text.strip
-    word_mw.definition = doc.search(".wod-definition-container").text.strip
+    word_mw.definition = "#{doc.search(".main-attr").text.strip}, #{doc.search(".wod-definition-container p").first.text.strip}"
     word_mw.didja_know = doc.search(".wod-did-you-know-container").text.strip
     # binding.pry
     word_mw
@@ -34,7 +34,7 @@ class WordOfTheDay::Words
     word_dic.word = doc.search(".definition-header strong").text.strip
     word_dic.date = doc.search(".date-wrapper").text.strip
     word_dic.definition = doc.search(".first").text.strip
-    word_dic.didja_know = doc.search(".origin-context").text.strip
+    word_dic.didja_know = doc.search(".origin-content").text.strip
 
     word_dic
   end #scrape_dictionary
@@ -44,14 +44,14 @@ class WordOfTheDay::Words
     word_wt = self.new
     word_wt.site_name = "WordThink"
 
-    # word_wt.word = doc.search().text.strip
-    word_wt.date = doc.search(".datebox").text.strip
-    # word_wt.definition = doc.search().text.strip
+    word_wt.word = doc.search(".title").first.text.strip
+    word_wt.date = "#{doc.search(".months").first.text.strip} #{doc.search(".dates").first.text.strip} #{doc.search(".years").first.text.strip} "
+    word_wt.definition = doc.search("p").first.text.strip
     # word_wt.didja_know = doc.search().text.strip
 
-    word_wt.word = "hard code - word"
+    # word_wt.word = "hard code - word"
     # word_wt.date = "hard code - date"
-    word_wt.definition = "hard code - definition"
+    # word_wt.definition = "hard code - definition"
     word_wt.didja_know = "hard code - didja_know"
 
     word_wt
