@@ -13,7 +13,7 @@ class WordOfTheDay::CLI
       puts "#{i+1}. #{word.site_name} -- #{word.date}"
       puts "Today's word: #{word.word}"
       puts "#{word.definition}"
-      puts "#{word.didja_know}"
+      #puts "#{word.didja_know}"
     end #each_with_index
 
   end #list_words
@@ -29,7 +29,7 @@ class WordOfTheDay::CLI
       elsif input == "list"
         list_deals
       else
-        puts "Not sure what you want, type list, word number, or exit"
+        #puts "Type list, word number, or exit"
       end # if
     end # while
   end ##menu
