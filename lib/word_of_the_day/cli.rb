@@ -4,7 +4,7 @@ class WordOfTheDay::CLI
     puts "WELCOME TO YOUR WORDS OF THE DAY!!!"
     puts
       list_words
-      menu
+      run
       goodbye
   end
 
@@ -17,20 +17,22 @@ class WordOfTheDay::CLI
     show_options
   end
 
-  def menu
+  def run
     input = nil
     while input != "exit"
       input = gets.strip.downcase
       if input.to_i > 0 && input.to_i <= @words.length
         the_word = @words[input.to_i - 1]
-        puts "#{the_word.word}"
+        puts "----------------------------------------------------------"
+        puts "#{the_word.word}" unless the_word.site_name == "WordThink" || the_word.site_name == "The Free Dictionary"
         puts "#{the_word.definition}"
         puts "#{the_word.details}"
+        puts "----------------------------------------------------------"
         show_options
       elsif input == "list"
         list_words
       else
-        puts "Invalid entry."
+        puts "Invalid entry." unless input == "exit"
         show_options
       end
 

@@ -13,7 +13,6 @@ class WordOfTheDay::Words
     words << self.scrape_wordthink
     words << self.scrape_wordnik
     words << self.scrape_thefreedictionary
-    words << self.scrape_wiki
     words
   end
 
@@ -32,7 +31,10 @@ class WordOfTheDay::Words
     word_dic = self.new
     word_dic.site_name = "Dictionary.com"
     word_dic.word = doc.search(".definition-header strong").text.strip
-    word_dic.definition = "1. " + doc.search(".first").text.strip + " 2. " + doc.search(".second").text.strip
+    if doc.search(".second")
+      word_dic.definition = "1. " + doc.search(".first").text.strip + " 2. " + doc.search(".second").text.strip
+    else word_dic.definition = doc.search(".first").text.strip
+    end
     word_dic.details = doc.search("#wotd-2016-10-10 > div.smart-box-container > div.citation-wrapper.smart-item > div > blockquote:nth-child(2)").text.strip
     word_dic
   end
@@ -61,17 +63,8 @@ class WordOfTheDay::Words
     wrd = self.new
     wrd.site_name = "The Free Dictionary"
     wrd.word = doc.search("h3").first.text.strip
-    wrd.definition = doc.search("#Content_CA_WOD_0_DataZone").text.strip[0...-9]
+    wrd.definition = doc.search("#Content_CA_WOD_0_DataZone").text.strip[0...-9].gsub("Usage", "  Usage")
     wrd
   end
-
-  def self.scrape_wiki
-      doc = Nokogiri::HTML(open("https://en.wiktionary.org/wiki/Wiktionary:Word_of_the_day"))
-      wiki_word = self.new
-      wiki_word.site_name = "Wiktionary"
-      wiki_word.word = doc.search("#WOTD-rss-title").first.text.strip
-      wiki_word.definition = doc.search("#WOTD-rss-description > ol > li:nth-child(1)").text
-      wiki_word
-    end
 
 end
