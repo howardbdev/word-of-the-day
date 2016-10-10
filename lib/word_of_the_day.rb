@@ -8,6 +8,6 @@ require_relative "./word_of_the_day/words"
 
 
 
-module WordOfTheDay
-  # Your code goes here...
-end
+# module WordOfTheDay
+#   # Your code goes here...
+# end

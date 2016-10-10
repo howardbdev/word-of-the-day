@@ -1,60 +1,77 @@
 class WordOfTheDay::Words
 
-  attr_accessor :word, :definition, :date, :didja_know, :example, :site_name
+  attr_accessor :word, :definition, :details, :site_name
 
   def self.today
     self.scrape_words
-  end #today
+  end
 
   def self.scrape_words
     words = []
-    words << self.scrape_mw
+    words << self.scrape_merriam_webster
     words << self.scrape_dictionary
     words << self.scrape_wordthink
+    words << self.scrape_wordnik
+    words << self.scrape_thefreedictionary
+    words << self.scrape_wiki
     words
-  end #scrape_words
+  end
 
-  def self.scrape_mw
+  def self.scrape_merriam_webster
     doc = Nokogiri::HTML(open("http://www.merriam-webster.com/word-of-the-day"))
     word_mw = self.new
     word_mw.site_name = "Merriam-Webster"
-    word_mw.date = doc.search(".w-a-title").text.strip
     word_mw.word = doc.search(".word-and-pronunciation h1").text.strip
     word_mw.definition = "#{doc.search(".main-attr").text.strip}, #{doc.search(".wod-definition-container p").first.text.strip}"
-    word_mw.didja_know = doc.search(".wod-did-you-know-container").text.strip
-    # binding.pry
+    word_mw.details = doc.search("body > div.outer-container > div > div.main-wrapper.clearfix > main > article > div.lr-cols-area.clearfix.sticky-column > div.left-content > div > div.wod-definition-container > p:nth-child(5)").text.strip
     word_mw
-  end #scrape_mw
+  end
 
   def self.scrape_dictionary
     doc = Nokogiri::HTML(open("http://www.dictionary.com/wordoftheday/"))
     word_dic = self.new
     word_dic.site_name = "Dictionary.com"
-
     word_dic.word = doc.search(".definition-header strong").text.strip
-    word_dic.date = doc.search(".date-wrapper").text.strip
-    word_dic.definition = doc.search(".first").text.strip
-    word_dic.didja_know = doc.search(".origin-content").text.strip
-
+    word_dic.definition = "1. " + doc.search(".first").text.strip + " 2. " + doc.search(".second").text.strip
+    word_dic.details = doc.search("#wotd-2016-10-10 > div.smart-box-container > div.citation-wrapper.smart-item > div > blockquote:nth-child(2)").text.strip
     word_dic
-  end #scrape_dictionary
+  end
 
   def self.scrape_wordthink
     doc = Nokogiri::HTML(open("http://www.wordthink.com/"))
     word_wt = self.new
     word_wt.site_name = "WordThink"
-
     word_wt.word = doc.search(".title").first.text.strip
-    word_wt.date = "#{doc.search(".months").first.text.strip} #{doc.search(".dates").first.text.strip} #{doc.search(".years").first.text.strip} "
     word_wt.definition = doc.search("p").first.text.strip
-    # word_wt.didja_know = doc.search().text.strip
-
-    # word_wt.word = "hard code - word"
-    # word_wt.date = "hard code - date"
-    # word_wt.definition = "hard code - definition"
-    word_wt.didja_know = "hard code - didja_know"
-
     word_wt
-  end #scrape_dictionary
+  end
 
-end #class
+  def self.scrape_wordnik
+    doc = Nokogiri::HTML(open("https://www.wordnik.com/word-of-the-day"))
+    wrd = self.new
+    wrd.site_name = "Wordnik.com"
+    wrd.word = doc.search("h1").text.strip
+    wrd.definition = doc.search("#define > div > ul > li").text
+    wrd.details = doc.search("#wotd > div.content_column > div.word-module.module-examples > ul > li:nth-child(1) > p.text").text.strip + " - " + doc.search("#wotd > div.content_column > div.word-module.module-examples > ul > li:nth-child(1) > p.source > a").text.strip
+    wrd
+  end
+
+  def self.scrape_thefreedictionary
+    doc = Nokogiri::HTML(open("http://www.thefreedictionary.com/"))
+    wrd = self.new
+    wrd.site_name = "The Free Dictionary"
+    wrd.word = doc.search("h3").first.text.strip
+    wrd.definition = doc.search("#Content_CA_WOD_0_DataZone").text.strip[0...-9]
+    wrd
+  end
+
+  def self.scrape_wiki
+      doc = Nokogiri::HTML(open("https://en.wiktionary.org/wiki/Wiktionary:Word_of_the_day"))
+      wiki_word = self.new
+      wiki_word.site_name = "Wiktionary"
+      wiki_word.word = doc.search("#WOTD-rss-title").first.text.strip
+      wiki_word.definition = doc.search("#WOTD-rss-description > ol > li:nth-child(1)").text
+      wiki_word
+    end
+
+end
