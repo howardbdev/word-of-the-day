@@ -24,6 +24,7 @@ class WordOfTheDay::CLI
       if input.to_i > 0 && input.to_i <= @words.length
         the_word = @words[input.to_i - 1]
         puts "----------------------------------------------------------"
+        puts "#{the_word.site_name}"
         puts "#{the_word.word}" unless the_word.site_name == "WordThink" || the_word.site_name == "The Free Dictionary"
         puts "#{the_word.definition}"
         puts "#{the_word.details}"
@@ -31,9 +32,11 @@ class WordOfTheDay::CLI
         show_options
       elsif input == "list"
         list_words
+      elsif input == "exit"
+        break
       else
-        puts "Invalid entry." unless input == "exit"
-        show_options
+          puts "Invalid entry."
+          show_options
       end
 
     end
