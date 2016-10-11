@@ -1,7 +1,10 @@
 class WordOfTheDay::CLI
 
+  attr_accessor :words
+
   def call
     puts "WELCOME TO YOUR WORDS OF THE DAY!!!"
+    puts Date.today
     puts
       list_words
       run
@@ -9,8 +12,8 @@ class WordOfTheDay::CLI
   end
 
   def list_words
-    @words = WordOfTheDay::Words.today
-    @words.each_with_index do |word, i|
+    self.words = WordOfTheDay::Words.today
+    self.words.each_with_index do |word, i|
       puts "#{i+1}. #{word.site_name}:"
       puts "#{word.word}"
     end
@@ -21,14 +24,9 @@ class WordOfTheDay::CLI
     input = nil
     while input != "exit"
       input = gets.strip.downcase
-      if input.to_i > 0 && input.to_i <= @words.length
-        the_word = @words[input.to_i - 1]
-        puts "----------------------------------------------------------"
-        puts "#{the_word.site_name}"
-        puts "#{the_word.word}" unless the_word.site_name == "WordThink" || the_word.site_name == "The Free Dictionary"
-        puts "#{the_word.definition}"
-        puts "#{the_word.details}"
-        puts "----------------------------------------------------------"
+      if input.to_i > 0 && input.to_i <= self.words.length
+        the_word = self.words[input.to_i - 1]
+        display_word_details(the_word)
         show_options
       elsif input == "list"
         list_words
@@ -40,6 +38,15 @@ class WordOfTheDay::CLI
       end
 
     end
+  end
+
+  def display_word_details(the_word)
+    puts "----------------------------------------------------------"
+    puts "#{the_word.site_name}"
+    puts "#{the_word.word}" unless the_word.site_name == "WordThink" || the_word.site_name == "The Free Dictionary"
+    puts "#{the_word.definition}"
+    puts "#{the_word.details}"
+    puts "----------------------------------------------------------"
   end
 
   def show_options
