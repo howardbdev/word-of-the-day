@@ -21,7 +21,10 @@ class WordOfTheDay::Words
     word_mw = self.new
     word_mw.site_name = "Merriam-Webster"
     word_mw.word = doc.search(".word-and-pronunciation h1").text.strip
-    word_mw.definition = "#{doc.search(".main-attr").text.strip}, #{doc.search(".wod-definition-container p").first.text.strip}"
+    word_mw.definition = ""
+    doc.search(".wod-definition-container p").each do |element|
+      word_mw.definition << element.text + "\n"
+    end
     word_mw.details = doc.search("body > div.outer-container > div > div.main-wrapper.clearfix > main > article > div.lr-cols-area.clearfix.sticky-column > div.left-content > div > div.wod-definition-container > p:nth-child(5)").text.strip
     word_mw
   end
