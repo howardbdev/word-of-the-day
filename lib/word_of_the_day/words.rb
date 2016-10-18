@@ -4,8 +4,6 @@ class WordOfTheDay::Word
 
   @@all = []
 
-  # self.new({word: 'happy', definition: 'definition will be here', details: 'word details', site_name: 'Merriam Webster'})
-
   def initialize(attributes = {})
     @word = attributes[:word]
     @definition = attributes[:definition]
