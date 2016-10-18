@@ -12,8 +12,8 @@ class WordOfTheDay::CLI
   end
 
   def list_words
-    self.words = WordOfTheDay::Words.today
-    self.words.each_with_index do |word, i|
+    WordOfTheDay::Scraper.scrape_words if WordOfTheDay::Word.all.empty?
+    WordOfTheDay::Word.all.each_with_index do |word, i|
       puts "#{i+1}. #{word.site_name}:"
       puts "#{word.word}"
     end
@@ -24,8 +24,8 @@ class WordOfTheDay::CLI
     input = nil
     while input != "exit"
       input = gets.strip.downcase
-      if input.to_i > 0 && input.to_i <= self.words.length
-        the_word = self.words[input.to_i - 1]
+      if input.to_i > 0 && input.to_i <= WordOfTheDay::Word.all.length
+        the_word = WordOfTheDay::Word.all[input.to_i - 1]
         display_word_details(the_word)
         show_options
       elsif input == "list"
