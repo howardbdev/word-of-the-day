@@ -1,8 +1,6 @@
 # WordOfTheDay
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/word_of_the_day`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A gem that allows users to see a word of the day from five different websites!  Boost that vocab!
 
 ## Installation
 
@@ -19,10 +17,6 @@ And then execute:
 Or install it yourself as:
 
     $ gem install word_of_the_day
-
-## Usage
-
-TODO: Write usage instructions here
 
 ## Development
 
